@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -29,10 +30,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.achsanit.todolistapp.foundation.navigation.NavGraph
 import com.achsanit.todolistapp.foundation.ui.components.TextFieldLabel
 import com.achsanit.todolistapp.foundation.ui.theme.ToDoListAppTheme
 
 class MainActivity : ComponentActivity() {
+
+    lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -42,66 +50,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainLayout {
-                        Toast.makeText(this, "bisaaa", Toast.LENGTH_SHORT).show()
-                    }
+                    navController = rememberNavController()
+                    NavGraph(navController = navController)
                 }
+
             }
         }
     }
-}
-
-@Composable
-fun MainLayout(
-    onClick: () -> Unit
-) {
-    var tv1 by remember { mutableStateOf("") }
-    var tv2 by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier.padding(40.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            modifier = Modifier.padding(vertical = 24.dp),
-            text = "Login",
-            style = MaterialTheme.typography.headlineLarge
-        )
-        TextFieldLabel(
-            text = tv1,
-            onValueChange = {
-                tv1 = it
-            },
-            label = R.string.app_name
-        )
-        TextFieldLabel(
-            text = tv2,
-            onValueChange = {
-                tv2 = it
-            },
-            label = R.string.app_name
-        )
-        Spacer( modifier = Modifier.height(24.dp))
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = onClick,
-            shape = RoundedCornerShape(12.dp),
-        ) {
-            Text(
-                modifier = Modifier.padding(vertical = 8.dp),
-                text = "Login",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainLayoutPreview() {
-    MainLayout { }
 }
